@@ -1,0 +1,407 @@
+/* ══════════════════════════════════════════════
+   Register / OTP Page — Premium Dark UI
+══════════════════════════════════════════════ */
+
+.reg__page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 20px 60px;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Glow orbs */
+.reg__orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.reg__orb--1 {
+    width: 400px;
+    height: 400px;
+    background: rgba(255, 107, 53, 0.12);
+    top: -100px;
+    right: -100px;
+}
+
+.reg__orb--2 {
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 215, 0, 0.06);
+    bottom: -80px;
+    left: -80px;
+}
+
+.reg__wrapper {
+    width: 100%;
+    max-width: 460px;
+    position: relative;
+    z-index: 1;
+}
+
+/* ── Step bar ── */
+.reg__steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    gap: 0;
+}
+
+.reg__step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.reg__step-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    transition: all 0.35s;
+}
+
+.reg__step-circle.active {
+    border-color: var(--primary);
+    background: rgba(255, 107, 53, 0.15);
+    color: var(--primary);
+    box-shadow: 0 0 12px rgba(255, 107, 53, 0.3);
+}
+
+.reg__step-circle.done {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    border-color: var(--primary);
+    color: #fff;
+}
+
+.reg__step-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.reg__step-label.active {
+    color: var(--primary);
+}
+
+.reg__step-line {
+    flex: 1;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 0 10px;
+    margin-bottom: 22px;
+    transition: background 0.4s;
+    min-width: 50px;
+}
+
+.reg__step-line.active {
+    background: var(--primary);
+}
+
+/* ── Card ── */
+.reg__card {
+    background: rgba(26, 26, 46, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    border-radius: 20px;
+    padding: 40px 36px;
+    backdrop-filter: blur(20px);
+    box-shadow:
+        0 0 0 1px rgba(255, 107, 53, 0.08),
+        0 24px 60px rgba(0, 0, 0, 0.5),
+        0 0 40px rgba(255, 107, 53, 0.05);
+}
+
+/* ── Card header ── */
+.reg__card-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.reg__icon-wrap {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(255, 107, 53, 0.1);
+    border: 1px solid rgba(255, 107, 53, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.7rem;
+    color: var(--primary);
+    margin: 0 auto 16px;
+    box-shadow: 0 0 20px rgba(255, 107, 53, 0.15);
+}
+
+.reg__icon-wrap--mail {
+    background: rgba(33, 150, 243, 0.1);
+    border-color: rgba(33, 150, 243, 0.25);
+    color: #2196f3;
+    box-shadow: 0 0 20px rgba(33, 150, 243, 0.15);
+}
+
+.reg__card-header h2 {
+    font-size: 1.75rem !important;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.reg__card-header p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.reg__email-highlight {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* ── Alert ── */
+.reg__alert {
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-size: 0.83rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+    overflow: hidden;
+}
+
+.reg__alert--error {
+    background: rgba(244, 67, 54, 0.1);
+    border: 1px solid rgba(244, 67, 54, 0.3);
+    color: #ef5350;
+}
+
+/* ── Form fields ── */
+.reg__field {
+    margin-bottom: 16px;
+}
+
+.reg__label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 7px;
+}
+
+.reg__input {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1.5px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    color: #f0f0f0;
+    padding: 12px 14px;
+    font-size: 0.92rem;
+    font-family: "Poppins", sans-serif;
+    outline: none;
+    transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+}
+
+.reg__input:focus {
+    border-color: var(--primary);
+    background: rgba(255, 107, 53, 0.05);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.12);
+}
+
+.reg__input::placeholder {
+    color: rgba(160, 160, 176, 0.5);
+}
+
+/* ── Primary button ── */
+.reg__btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 8px;
+    background: linear-gradient(135deg, #ff6b35, #e85520);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.97rem;
+    font-family: "Poppins", sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 20px rgba(255, 107, 53, 0.4);
+    letter-spacing: 0.3px;
+}
+
+.reg__btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(255, 107, 53, 0.55);
+}
+
+.reg__btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Spin animation for loader icon */
+@keyframes reg-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.reg__spin {
+    display: inline-block;
+    animation: reg-spin 0.8s linear infinite;
+}
+
+/* ── Footer text ── */
+.reg__footer-text {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.84rem;
+    color: var(--text-muted);
+}
+
+.reg__footer-text a {
+    color: var(--primary);
+    font-weight: 600;
+    transition: opacity 0.2s;
+}
+
+.reg__footer-text a:hover {
+    opacity: 0.8;
+}
+
+/* ── Resend section ── */
+.reg__resend {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.84rem;
+    color: var(--text-muted);
+}
+
+.reg__timer {
+    color: var(--primary);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.reg__resend-btn {
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 0.84rem;
+    font-family: "Poppins", sans-serif;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.reg__resend-btn:hover:not(:disabled) {
+    background: rgba(255, 107, 53, 0.1);
+}
+
+.reg__resend-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ── Change email ── */
+.reg__change-email {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-family: "Poppins", sans-serif;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+}
+
+.reg__change-email:hover {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* ── Success overlay ── */
+.reg__success-overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background: rgba(26, 26, 46, 0.97);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    gap: 10px;
+}
+
+.reg__success-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(76, 175, 80, 0.12);
+    border: 2px solid rgba(76, 175, 80, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.4rem;
+    color: #4caf50;
+    box-shadow: 0 0 30px rgba(76, 175, 80, 0.25);
+}
+
+.reg__success-overlay h4 {
+    color: #4caf50;
+    font-size: 1.4rem;
+    margin: 0;
+}
+
+.reg__success-overlay p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    margin: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+    .reg__card {
+        padding: 28px 20px;
+    }
+
+    .reg__card-header h2 {
+        font-size: 1.4rem !important;
+    }
+}

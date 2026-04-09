@@ -1,0 +1,123 @@
+.cart__container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 99999;
+}
+
+.cart {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 380px;
+  height: 100%;
+  background: var(--bg-card);
+  border-left: 1px solid var(--border);
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart__header {
+  padding: 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cart__header h5 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.cart__closeButton {
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 107, 53, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.cart__closeButton:hover {
+  background: var(--primary);
+}
+
+.cart__closeButton span i {
+  font-size: 1rem;
+  color: var(--primary);
+  line-height: 1;
+}
+
+.cart__closeButton:hover span i {
+  color: #fff;
+}
+
+.cart__item-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.cart__item-list>h6 {
+  margin-top: 5rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.cart__bottom {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-card);
+}
+
+.cart__bottom h6 {
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.cart__bottom h6 span {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.cart__checkout-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+}
+
+.cart__checkout-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 107, 53, 0.6);
+}
+
+.cart__checkout-btn a {
+  color: #fff;
+}
+
+@media only screen and (max-width: 480px) {
+  .cart {
+    width: 100%;
+  }
+}

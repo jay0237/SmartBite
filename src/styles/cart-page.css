@@ -1,0 +1,138 @@
+.cart__page-section {
+  padding: 40px 0 80px;
+}
+
+.cart__table {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.cart__table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.cart__table thead th {
+  background: rgba(255, 107, 53, 0.08);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 14px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+.cart__table tbody td {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.9rem;
+  vertical-align: middle;
+}
+
+.cart__table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.cart__table tbody tr:hover td {
+  background: rgba(255, 107, 53, 0.03);
+}
+
+.cart__img-box {
+  width: 70px;
+}
+
+.cart__img-box img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+
+.cart__item-del i {
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  transition: color 0.2s;
+}
+
+.cart__item-del i:hover {
+  color: var(--danger);
+}
+
+.cart__summary {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+}
+
+.cart__summary h6 {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.cart__subtotal {
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cart__summary p {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}
+
+.cart__page-btn {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.addTOCart__btn {
+  border: none;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+}
+
+.addTOCart__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 107, 53, 0.5);
+}
+
+.addTOCart__btn a {
+  color: #fff;
+}
+
+.cart__empty {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.cart__empty i {
+  font-size: 4rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  display: block;
+}
+
+.cart__empty h5 {
+  color: var(--text-muted);
+  margin-bottom: 20px;
+}

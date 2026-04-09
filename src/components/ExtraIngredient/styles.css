@@ -1,0 +1,38 @@
+.extraIngredient {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.extraIngredient:hover {
+  border-color: rgba(255, 107, 53, 0.4);
+  background: rgba(255, 107, 53, 0.05);
+}
+
+.extraIngredient.checked {
+  border-color: var(--primary);
+  background: rgba(255, 107, 53, 0.1);
+}
+
+.ingredient__name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.ingredient__check {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+
+.extraIngredient.checked .ingredient__check {
+  color: var(--primary);
+}
