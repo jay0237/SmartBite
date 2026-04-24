@@ -1,25 +1,26 @@
-# 🍕 Smart Bite — Food Delivery Platform
+Smart Bite — Food Delivery Platform
 
 A full-stack food delivery web app built with React, Node.js, Express, and MongoDB.
 
-## ✨ Features
+Features
 
-- 🛒 Full cart system with Redux
-- 🔐 JWT authentication with OTP email verification
-- 💳 Razorpay payment integration (UPI, Cards, Wallets)
-- 📧 Order receipt emails via Nodemailer
-- 📦 Real-time order tracking with auto-advance timeline
-- 👨‍💼 Admin panel — manage orders, menu, users
-- 📱 Fully responsive dark UI
+- Full cart system with Redux
+- JWT authentication with OTP email verification
+- Razorpay payment integration (UPI, Cards, Wallets)
+- Order receipt emails via Nodemailer
+- Real-time order tracking with auto-advance timeline
+- Admin panel — manage orders, menu, users
+- Fully responsive dark UI
+- Integrated AI Chatbot System(with Gemini API)
 
-## 🚀 Tech Stack
+Tech Stack
 
-**Frontend:** React, Redux Toolkit, Framer Motion, Reactstrap  
-**Backend:** Node.js, Express, MongoDB (Atlas), Mongoose  
-**Auth:** JWT + bcrypt + OTP via Nodemailer  
-**Payments:** Razorpay  
+Frontend: React, Redux Toolkit, Framer Motion, Reactstrap  
+Backend: Node.js, Express, MongoDB (Atlas), Mongoose  
+Auth:** JWT + bcrypt + OTP via Nodemailer  
+Payments: Razorpay  
 
-## ⚙️ Setup
+Setup Guidence:
 
 ### 1. Clone the repo
 ```bash
@@ -51,7 +52,7 @@ Email: admin@smartbite.com
 Password: admin123
 ```
 
-## 🔑 Environment Variables
+##  Environment Variables
 
 See `.env.example` and `backend/.env.example` for required variables.
 
