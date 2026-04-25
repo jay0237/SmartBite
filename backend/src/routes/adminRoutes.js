@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { getStats, getUsers, deleteUser, updateUserRole } = require("../controllers/adminController");
+const { getStats, getUsers, deleteUser, updateUserRole, seedRestaurantsData } = require("../controllers/adminController");
 const { getAllOrders, updateOrderStatus } = require("../controllers/orderController");
 const { getProducts, createProduct, updateProduct, deleteProduct } = require("../controllers/productController");
 const { protect, adminOnly } = require("../middleware/auth");
@@ -17,5 +17,6 @@ router.get("/products", getProducts);
 router.post("/products", createProduct);
 router.put("/products/:id", updateProduct);
 router.delete("/products/:id", deleteProduct);
+router.post("/seed-restaurants", seedRestaurantsData);
 
 module.exports = router;

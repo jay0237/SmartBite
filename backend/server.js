@@ -10,6 +10,7 @@ const orderRoutes = require("./src/routes/orderRoutes");
 const adminRoutes = require("./src/routes/adminRoutes");
 const paymentRoutes = require("./src/routes/paymentRoutes");
 const chatbotRoutes = require("./src/routes/chatbotRoutes");
+const restaurantRoutes = require("./src/routes/restaurantRoutes");
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/chatbot", chatbotRoutes);
+app.use("/api/restaurants", restaurantRoutes);
 
 // Health check
 app.get("/api/health", (req, res) => res.json({ status: "ok", time: new Date() }));

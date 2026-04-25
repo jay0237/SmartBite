@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const Order = require("../models/Order");
 const Product = require("../models/Product");
+const seedRestaurants = require("../utils/restaurantSeeder");
 
 // GET /api/admin/stats
 const getStats = async (req, res) => {
@@ -43,4 +44,21 @@ const updateUserRole = async (req, res) => {
     res.json({ success: true, user });
 };
 
-module.exports = { getStats, getUsers, deleteUser, updateUserRole };
+// POST /api/admin/seed-restaurants
+const seedRestaurantsData = async (req, res) => {
+    try {
+        const restaurants = await seedRestaurants();
+        res.json({
+            success: true,
+            message: "Restaurants seeded successfully",
+            count: restaurants.length,
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message,
+        });
+    }
+};
+
+module.exports = { getStats, getUsers, deleteUser, updateUserRole, seedRestaurantsData };
