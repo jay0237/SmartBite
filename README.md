@@ -1,4 +1,4 @@
-# 🍕 Smart Bite — AI-Powered Food Delivery Platform
+# Smart Bite — AI-Powered Food Delivery Platform
 
 Smart Bite is a full-stack, AI-powered food delivery web application built with modern technologies. It combines seamless ordering, intelligent recommendations, and a complete restaurant discovery system to deliver a premium user experience similar to top platforms like Zomato and Swiggy.
 
@@ -15,6 +15,7 @@ Smart Bite is a full-stack, AI-powered food delivery web application built with 
 * Real-time order tracking with auto-advance timeline
 * Admin panel — manage orders, menu, users
 * Fully responsive dark UI
+* restaurent listing
 
 ---
 
