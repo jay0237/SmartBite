@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { cartActions } from "../../../store/shopping-cart/cartSlice";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import FavoriteBtn from "../FavoriteBtn/FavoriteBtn";
 
 const ProductCard = ({ item }) => {
   const id = item._id || item.id;
@@ -28,6 +29,11 @@ const ProductCard = ({ item }) => {
         <div className="product__img-wrapper">
           <img className="product__img" src={image01} alt={title} />
           <span className="product__badge">{category}</span>
+          {/* Heart button — top right of image */}
+          <div style={{ position: "absolute", top: 8, right: 8, zIndex: 3 }}
+            onClick={(e) => e.preventDefault()}>
+            <FavoriteBtn item={item} size="sm" />
+          </div>
         </div>
         <div className="product__content">
           <h5 className="mb-1" style={{ color: "var(--text)" }}>{title}</h5>

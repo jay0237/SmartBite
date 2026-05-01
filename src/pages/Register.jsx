@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 import { authActions } from "../store/shopping-cart/authSlice";
+import { fetchFavorites } from "../store/shopping-cart/favoritesSlice";
 import { sendOtp as sendOtpAPI, verifyOtp as verifyOtpAPI, register as registerAPI } from "../api/auth";
 import OTPInput from "../components/OTP/OTPInput";
 import Helmet from "../components/Helmet/Helmet";
@@ -111,6 +112,7 @@ const Register = () => {
             // OTP verified — now register
             const { data } = await registerAPI({ name: form.name, email: form.email, password: form.password });
             dispatch(authActions.setCredentials({ user: data.user, token: data.token }));
+            dispatch(fetchFavorites());
             setSuccess(true);
             setTimeout(() => navigate("/home"), 1400);
         } catch (err) {

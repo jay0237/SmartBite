@@ -9,6 +9,7 @@ import { cartActions } from "../store/shopping-cart/cartSlice";
 import { motion } from "framer-motion";
 import { getProduct, getProducts } from "../api/products";
 import localProducts from "../assets/fake-data/products";
+import FavoriteBtn from "../components/UI/FavoriteBtn/FavoriteBtn";
 import "../styles/product-details.css";
 import ProductCard from "../components/UI/product-card/ProductCard";
 
@@ -153,10 +154,13 @@ const PizzaDetails = () => {
                 <h2 className="product__title mb-3">{title}</h2>
                 <p className="product__price">Price: <span>₹{price}</span></p>
                 <p className="category mb-4">Category: <span>{category}</span></p>
-                <button onClick={addItem} className="addTOCART__btn">
-                  <i className={`ri-${inCart ? "refresh-line" : "shopping-cart-line"} me-2`}></i>
-                  {inCart ? "Update Cart" : "Add to Cart"}
-                </button>
+                <div className="d-flex align-items-center gap-3">
+                  <button onClick={addItem} className="addTOCART__btn">
+                    <i className={`ri-${inCart ? "refresh-line" : "shopping-cart-line"} me-2`}></i>
+                    {inCart ? "Update Cart" : "Add to Cart"}
+                  </button>
+                  <FavoriteBtn item={product} size="lg" />
+                </div>
               </div>
             </Col>
 
