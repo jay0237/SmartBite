@@ -1,0 +1,46 @@
+.fav__btn {
+    position: relative;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    overflow: visible;
+}
+
+/* Sizes */
+.fav__btn--sm { width: 30px; height: 30px; font-size: 0.85rem; }
+.fav__btn--md { width: 36px; height: 36px; font-size: 1rem; }
+.fav__btn--lg { width: 44px; height: 44px; font-size: 1.2rem; }
+
+.fav__btn:hover {
+    background: rgba(244, 67, 54, 0.12);
+    border-color: rgba(244, 67, 54, 0.4);
+    color: #f44336;
+    transform: scale(1.1);
+}
+
+/* Active (favorited) state */
+.fav__btn--active {
+    background: rgba(244, 67, 54, 0.15);
+    border-color: rgba(244, 67, 54, 0.5);
+    color: #f44336;
+}
+
+.fav__btn--active:hover {
+    background: rgba(244, 67, 54, 0.25);
+}
+
+/* Burst ring animation */
+.fav__burst {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: rgba(244, 67, 54, 0.3);
+    pointer-events: none;
+}

@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { motion } from "framer-motion";
 import { authActions } from "../store/shopping-cart/authSlice";
+import { fetchFavorites } from "../store/shopping-cart/favoritesSlice";
 import { login as loginAPI } from "../api/auth";
 import Helmet from "../components/Helmet/Helmet";
 
@@ -23,6 +24,8 @@ const Login = () => {
         try {
             const { data } = await loginAPI(form);
             dispatch(authActions.setCredentials({ user: data.user, token: data.token }));
+            // Load user's favorites immediately after login
+            dispatch(fetchFavorites());
             navigate(data.user.role === "admin" ? "/admin" : "/home");
         } catch (err) {
             setError(err.response?.data?.message || "Login failed. Please try again.");

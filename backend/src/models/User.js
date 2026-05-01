@@ -11,6 +11,10 @@ const userSchema = new mongoose.Schema(
         avatar: { type: String, default: "" },
         phone: { type: String, default: "" },
         address: { type: String, default: "" },
+        // Favorites — stores dish (Product) ObjectIds
+        favorites: {
+            dishes: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
+        },
     },
     { timestamps: true }
 );

@@ -9,6 +9,7 @@ const productRoutes = require("./src/routes/productRoutes");
 const orderRoutes = require("./src/routes/orderRoutes");
 const adminRoutes = require("./src/routes/adminRoutes");
 const paymentRoutes = require("./src/routes/paymentRoutes");
+const favoritesRoutes = require("./src/routes/favoritesRoutes");
 
 const app = express();
 
@@ -32,7 +33,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/payment", paymentRoutes);
-app.use("/api/admin", adminRoutes);
+app.use("/api/favorites", favoritesRoutes);
 
 // Health check
 app.get("/api/health", (req, res) => res.json({ status: "ok", time: new Date() }));

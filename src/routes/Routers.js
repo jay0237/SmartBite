@@ -11,6 +11,7 @@ import Register from "../pages/Register";
 import OrderStatus from "../pages/OrderStatus";
 import Contact from "../pages/Contact";
 import Admin from "../pages/Admin";
+import Favorites from "../pages/Favorites";
 
 const Routers = () => {
   return (
@@ -26,6 +27,7 @@ const Routers = () => {
       <Route path="/order-status" element={<OrderStatus />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/admin" element={<Admin />} />
+      <Route path="/favorites" element={<Favorites />} />
     </Routes>
   );
 };
