@@ -4,9 +4,9 @@ Smart Bite is a full-stack, AI-powered food delivery web application built with 
 
 ---
 
-## ✨ Features
+## Features
 
-### 🛒 Core Features
+### Core Features
 
 * Full cart system with Redux Toolkit
 * JWT authentication with OTP email verification
@@ -19,7 +19,7 @@ Smart Bite is a full-stack, AI-powered food delivery web application built with 
 
 ---
 
-### 🍽️ Restaurant Discovery System (NEW 🚀)
+### Restaurant Discovery System (NEW 🚀)
 
 * Complete restaurant listing system
 * Advanced filtering:
@@ -34,7 +34,7 @@ Smart Bite is a full-stack, AI-powered food delivery web application built with 
 
 ---
 
-### 🎨 UI/UX Experience
+###  UI/UX Experience
 
 * Modern Zomato/Swiggy-inspired design
 * Smooth animations using Framer Motion
@@ -45,7 +45,7 @@ Smart Bite is a full-stack, AI-powered food delivery web application built with 
 
 ---
 
-### 🤖 AI Features
+### AI Features
 
 * Integrated AI chatbot (Gemini API)
 * Smart food suggestions (extensible to mood-based recommendations)
@@ -53,7 +53,7 @@ Smart Bite is a full-stack, AI-powered food delivery web application built with 
 
 ---
 
-## 🚀 Tech Stack
+## Tech Stack
 
 ### Frontend
 
@@ -80,7 +80,7 @@ Smart Bite is a full-stack, AI-powered food delivery web application built with 
 
 ---
 
-## 📊 Restaurant System Overview
+## Restaurant System Overview
 
 * 7 REST API endpoints (CRUD + Search + Filter)
 * Advanced query filtering & sorting
@@ -88,7 +88,7 @@ Smart Bite is a full-stack, AI-powered food delivery web application built with 
 * Redux-based state management
 * API service abstraction layer
 
-### 🍴 Sample Restaurants Included
+### Sample Restaurants Included
 
 * Pizzeria Bella (Italian) ⭐ 4.8
 * Spice Route (Indian) ⭐ 4.6
@@ -99,7 +99,7 @@ Smart Bite is a full-stack, AI-powered food delivery web application built with 
 
 ---
 
-## ⚙️ Setup Guide
+## Setup Guide
 
 ### 1. Clone Repository
 
@@ -185,7 +185,7 @@ Required services:
 
 ---
 
-## 🚀 Future Enhancements
+## Future Enhancements
 
 * Mood-based AI food recommendations
 * Live delivery tracking (maps integration)
@@ -195,17 +195,17 @@ Required services:
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 **Jay Joshi**
 Computer Engineering Student | Full-Stack Developer | UI/UX Enthusiast
 
 ---
 
-## 📌 Note
+## Note
 
 This project is built as a **production-ready full-stack application** showcasing real-world architecture, scalable design, and modern UI/UX practices.
 
 ---
 
-⭐ If you like this project, consider giving it a star on GitHub!
+If you like this project, consider giving it a star on GitHub!
