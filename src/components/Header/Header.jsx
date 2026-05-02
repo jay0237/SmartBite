@@ -87,13 +87,6 @@ const Header = () => {
                   {item.display}
                 </NavLink>
               ))}
-              {currentUser && (
-                <NavLink to="/favorites"
-                  className={(navClass) => navClass.isActive ? "active__menu" : ""}
-                  onClick={toggleMenu}>
-                  Favourites
-                </NavLink>
-              )}
               {currentUser?.role === "admin" && (
                 <NavLink to="/admin"
                   className={(navClass) => navClass.isActive ? "active__menu" : ""}
