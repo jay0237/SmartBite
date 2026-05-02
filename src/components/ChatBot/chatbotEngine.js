@@ -1,7 +1,7 @@
 // ─────────────────────────────────────────────────────────────
 //  Chatbot Engine — Smart rule-based AI for Smart Bite
-//  Works 100% on the frontend — no backend call needed.
-//  Optionally upgrades to Gemini if backend key is configured.
+//  Returns { text, chips, products } where products are
+//  clickable food cards rendered inside the chat bubble.
 // ─────────────────────────────────────────────────────────────
 
 export const QUICK_REPLIES = [
@@ -17,16 +17,19 @@ const getRuleBasedReply = (userText, menuItems) => {
     const msg = userText.toLowerCase().trim();
 
     const byCategory = (cat) => menuItems.filter((p) => p.category === cat);
-    const fmt = (items, n = 3) =>
-        items
-            .slice(0, n)
-            .map((p) => `• ${p.title} — ₹${p.price}`)
-            .join("\n");
+
+    // Helper: build reply with product cards
+    const withProducts = (text, items, chips = []) => ({
+        text,
+        products: items.slice(0, 3),
+        chips: chips.length ? chips : QUICK_REPLIES,
+    });
 
     // Greetings
     if (/^(hi|hello|hey|hii|helo|sup|yo)\b/.test(msg)) {
         return {
-            text: "Hey there! 👋 I'm Bitey, your Smart Bite food buddy!\n\nWhat are you craving today? Burgers, pizza, sushi, or something else? 😋",
+            text: "Hey there! 👋 I'm Bitey, your Smart Bite food buddy!\n\nWhat are you craving today?",
+            products: [],
             chips: QUICK_REPLIES,
         };
     }
@@ -35,162 +38,117 @@ const getRuleBasedReply = (userText, menuItems) => {
     if (/thank|bye|done|great|awesome|perfect/.test(msg)) {
         return {
             text: "You're welcome! 😊 Enjoy your meal! Come back anytime you're hungry. 🍕",
+            products: [],
             chips: ["Order more food 🍔", "Show full menu 📋"],
         };
     }
 
     // Add to cart intent
-    if (/add|cart|order/.test(msg)) {
+    if (/^add\s/.test(msg) || (msg.includes("add") && msg.includes("cart"))) {
         const found = menuItems.find((p) =>
             msg.includes(p.title.toLowerCase())
         );
-        if (found) {
-            return { text: `ADD_TO_CART:${found.title}`, chips: [] };
-        }
+        if (found) return { text: `ADD_TO_CART:${found.title}`, products: [], chips: [] };
         return {
-            text: "Which item would you like to add? Just tell me the name! 😊\n\nOr say 'show full menu' to browse.",
-            chips: ["Show full menu 📋", "Best sellers ⭐"],
+            text: "Which item would you like to add? Pick one below! 😊",
+            products: menuItems.slice(0, 3),
+            chips: ["Show full menu 📋"],
         };
     }
 
     // Burger
-    if (/burger|beef|chicken burger|bbq/.test(msg)) {
-        const items = byCategory("Burger");
-        return {
-            text: `Burger time! 🍔 Here's what we've got:\n\n${fmt(items)}\n\nWant me to add one to your cart?`,
-            chips: items.slice(0, 3).map((p) => `Add ${p.title}`),
-        };
+    if (/burger|beef|bbq/.test(msg)) {
+        return withProducts("Burger time! 🍔 Here's what we've got — tap to add to cart:", byCategory("Burger"));
     }
 
     // Pizza
-    if (/pizza|margherita|tikka|pepperoni/.test(msg)) {
-        const items = byCategory("Pizza");
-        return {
-            text: `Pizza lover! 🍕 Check these out:\n\n${fmt(items)}\n\nWhich one sounds good?`,
-            chips: items.slice(0, 3).map((p) => `Add ${p.title}`),
-        };
+    if (/pizza|margherita|tikka/.test(msg)) {
+        return withProducts("Pizza lover! 🍕 Check these out:", byCategory("Pizza"));
     }
 
     // Sushi
     if (/sushi|japanese|roll|nigiri/.test(msg)) {
-        const items = byCategory("Sushi");
-        return {
-            text: `Sushi fan! 🍣 Fresh picks:\n\n${fmt(items)}\n\nShall I add one to your cart?`,
-            chips: items.slice(0, 2).map((p) => `Add ${p.title}`),
-        };
+        return withProducts("Sushi fan! 🍣 Fresh picks:", byCategory("Sushi"));
     }
 
     // Drinks
     if (/drink|juice|coffee|smoothie|lemonade|thirsty/.test(msg)) {
-        const items = byCategory("Drinks");
-        return {
-            text: `Refreshing picks! 🥤\n\n${fmt(items)}\n\nWant one added to your cart?`,
-            chips: items.slice(0, 3).map((p) => `Add ${p.title}`),
-        };
+        return withProducts("Refreshing picks! 🥤", byCategory("Drinks"));
     }
 
-    // Snacks
+    // Snacks / light
     if (/snack|light|quick|nachos|wrap|garlic/.test(msg)) {
-        const items = byCategory("Snacks");
-        return {
-            text: `Something light? 😊\n\n${fmt(items)}\n\nWant me to add one?`,
-            chips: items.slice(0, 3).map((p) => `Add ${p.title}`),
-        };
+        return withProducts("Something light? 😊", byCategory("Snacks"));
     }
 
     // Desserts
     if (/sweet|dessert|cake|cheesecake|chocolate/.test(msg)) {
-        const items = byCategory("Desserts");
-        return {
-            text: `Sweet tooth! 🍰\n\n${fmt(items)}\n\nShall I add one to your cart?`,
-            chips: items.slice(0, 2).map((p) => `Add ${p.title}`),
-        };
+        return withProducts("Sweet tooth! 🍰", byCategory("Desserts"));
     }
 
     // Hungry / heavy
     if (/hungry|starving|heavy|filling|meal/.test(msg)) {
-        const burgers = byCategory("Burger");
-        const pizzas = byCategory("Pizza");
-        const picks = [...burgers.slice(0, 2), ...pizzas.slice(0, 1)];
-        return {
-            text: `You're hungry? Let's fix that! 😋\n\n${fmt(picks)}\n\nAny of these sound good?`,
-            chips: picks.map((p) => `Add ${p.title}`),
-        };
+        const picks = [...byCategory("Burger").slice(0, 2), ...byCategory("Pizza").slice(0, 1)];
+        return withProducts("You're hungry? Let's fix that! 😋", picks);
     }
 
-    // Best sellers / popular / recommend
+    // Best sellers / popular
     if (/best|popular|recommend|top|famous/.test(msg)) {
-        const picks = menuItems.slice(0, 4);
-        return {
-            text: `Our top picks right now! ⭐\n\n${fmt(picks, 4)}\n\nWant to add any of these?`,
-            chips: picks.slice(0, 3).map((p) => `Add ${p.title}`),
-        };
+        return withProducts("Our top picks right now! ⭐", menuItems.slice(0, 3));
     }
 
     // Surprise / random
     if (/surprise|random|anything|whatever|idk/.test(msg)) {
-        const random = menuItems[Math.floor(Math.random() * menuItems.length)];
-        return {
-            text: `Feeling adventurous? 🎲 How about:\n\n• ${random.title} — ₹${random.price}\n\n${random.desc || ""}\n\nShall I add it to your cart?`,
-            chips: [`Add ${random.title}`, "Show more options", "Surprise me again 🎲"],
-        };
+        const shuffled = [...menuItems].sort(() => Math.random() - 0.5);
+        return withProducts("Feeling adventurous? 🎲 How about these:", shuffled.slice(0, 3));
     }
 
     // Full menu
     if (/menu|all|list|show|what.*have|what.*got/.test(msg)) {
-        const cats = [...new Set(menuItems.map((p) => p.category))];
-        return {
-            text: `Here's what we serve! 🍽️\n\n${cats.map((c) => `${c}: ${byCategory(c).length} items`).join("\n")}\n\nTell me a category and I'll show you the details!`,
-            chips: cats.slice(0, 4),
-        };
+        return withProducts("Here's a taste of our menu! 🍽️", menuItems.slice(0, 3), ["Burgers 🍔", "Pizza 🍕", "Sushi 🍣", "Drinks 🥤"]);
     }
 
     // Price / cheap / budget
     if (/cheap|budget|affordable|price|cost|under/.test(msg)) {
         const cheap = [...menuItems].sort((a, b) => a.price - b.price).slice(0, 3);
-        return {
-            text: `Best value picks! 💰\n\n${fmt(cheap)}\n\nGreat food without breaking the bank! Want to add one?`,
-            chips: cheap.map((p) => `Add ${p.title}`),
-        };
+        return withProducts("Best value picks! 💰", cheap);
     }
 
     // Default fallback
-    const random = menuItems[Math.floor(Math.random() * menuItems.length)];
-    return {
-        text: `Hmm, tell me more about what you're craving! 🤔\n\nAre you in the mood for something heavy like a burger 🍔, light like a snack 🥗, or maybe something sweet 🍰?\n\nOr try: "${random?.title}" — ₹${random?.price}`,
-        chips: QUICK_REPLIES,
-    };
+    const shuffled = [...menuItems].sort(() => Math.random() - 0.5);
+    return withProducts(
+        "Hmm, tell me more about what you're craving! 🤔\n\nMeanwhile, here are some popular picks:",
+        shuffled.slice(0, 3),
+        QUICK_REPLIES
+    );
 };
 
-// ── Main export — tries backend Gemini, falls back to rules ──
+// ── Main export ───────────────────────────────────────────────
 export const getGeminiResponse = async (history, menuItems) => {
     const lastUserMsg =
         [...history].reverse().find((m) => m.role === "user")?.text || "";
 
-    // Try backend (Gemini) first — silently fall back if it fails
+    // Try backend Gemini first
     try {
-        const API_URL =
-            process.env.REACT_APP_API_URL || "http://localhost:5001/api";
-
+        const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5001/api";
         const res = await fetch(`${API_URL}/chatbot/message`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ history, menuItems }),
         });
-
         if (res.ok) {
             const data = await res.json();
             if (data.success && data.message) return data.message.trim();
         }
     } catch {
-        // Backend unavailable — use local engine below
+        // Backend unavailable — use local engine
     }
 
-    // Local rule-based engine — always works
+    // Local rule-based fallback
     const { text } = getRuleBasedReply(lastUserMsg, menuItems);
     return text;
 };
 
-// ── Standalone local reply (used by ChatBot.jsx for chips) ───
+// ── Used directly by ChatBot for full reply with products ─────
 export const getLocalReply = (userText, menuItems) =>
     getRuleBasedReply(userText, menuItems);

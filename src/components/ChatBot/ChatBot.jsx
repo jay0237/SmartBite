@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { cartActions } from "../../store/shopping-cart/cartSlice";
 import { getProducts } from "../../api/products";
 import localProducts from "../../assets/fake-data/products";
-import { getGeminiResponse, getLocalReply, QUICK_REPLIES } from "./chatbotEngine";
+import { getLocalReply, QUICK_REPLIES } from "./chatbotEngine";
 import "./ChatBot.css";
 
 const formatTime = () =>
@@ -12,10 +12,30 @@ const formatTime = () =>
 const WELCOME = {
     id: 1,
     role: "bot",
-    text: "Hey! 👋 I'm Bitey, your Smart Bite food buddy. Tell me your mood or what you're craving and I'll pick the perfect meal for you! 😋",
+    text: "Hey! 👋 I'm Bitey, your Smart Bite food buddy.\n\nTell me your mood or what you're craving and I'll pick the perfect meal for you! 😋",
+    products: [],
     time: formatTime(),
 };
 
+// ── Inline product card rendered inside chat bubble ───────────
+const ProductCard = ({ product, onAdd, added }) => (
+    <div className="chatbot__product-card">
+        <img src={product.image01} alt={product.title} className="chatbot__product-img" />
+        <div className="chatbot__product-info">
+            <span className="chatbot__product-name">{product.title}</span>
+            <span className="chatbot__product-price">₹{product.price}</span>
+        </div>
+        <button
+            className={`chatbot__product-btn ${added ? "added" : ""}`}
+            onClick={() => onAdd(product)}
+            disabled={added}
+        >
+            {added ? <><i className="ri-check-line" /> Added</> : <><i className="ri-shopping-cart-line" /> Add</>}
+        </button>
+    </div>
+);
+
+// ── Main ChatBot component ────────────────────────────────────
 const ChatBot = () => {
     const dispatch = useDispatch();
     const [isOpen, setIsOpen] = useState(false);
@@ -24,6 +44,7 @@ const ChatBot = () => {
     const [isTyping, setIsTyping] = useState(false);
     const [menuItems, setMenuItems] = useState([]);
     const [quickReplies, setQuickReplies] = useState(QUICK_REPLIES);
+    const [addedItems, setAddedItems] = useState({}); // track which items were added
     const messagesEndRef = useRef(null);
     const inputRef = useRef(null);
 
@@ -51,98 +72,80 @@ const ChatBot = () => {
         if (isOpen) setTimeout(() => inputRef.current?.focus(), 100);
     }, [isOpen]);
 
-    const addBotMessage = useCallback((text, chips = []) => {
+    // Add product to cart from chat
+    const handleAddToCart = useCallback((product) => {
+        const id = product._id || product.id;
+        dispatch(cartActions.addItem({
+            id,
+            title: product.title,
+            image01: product.image01,
+            price: product.price,
+            extraIngredients: [],
+        }));
+        // Mark as added for visual feedback
+        setAddedItems((prev) => ({ ...prev, [id]: true }));
+        // Add confirmation message
         setMessages((prev) => [
             ...prev,
-            { id: Date.now(), role: "bot", text, time: formatTime() },
+            {
+                id: Date.now(),
+                role: "bot",
+                text: `✅ "${product.title}" added to your cart!\n\nAnything else I can help with? 😊`,
+                products: [],
+                time: formatTime(),
+            },
+        ]);
+        setQuickReplies(["Show full menu 📋", "I'm feeling hungry 🍔", "I'm done thanks!"]);
+    }, [dispatch]);
+
+    const addBotMessage = useCallback((text, products = [], chips = []) => {
+        setMessages((prev) => [
+            ...prev,
+            { id: Date.now(), role: "bot", text, products, time: formatTime() },
         ]);
         setQuickReplies(chips.length > 0 ? chips : QUICK_REPLIES);
     }, []);
 
-    const handleAddToCart = useCallback(
-        (title) => {
-            const product = menuItems.find(
-                (p) => p.title.toLowerCase() === title.toLowerCase()
-            );
+    const processMessage = useCallback(async (text) => {
+        const trimmed = text.trim();
+        if (!trimmed || isTyping) return;
+
+        // Add user message
+        const userMsg = { id: Date.now(), role: "user", text: trimmed, products: [], time: formatTime() };
+        setMessages((prev) => [...prev, userMsg]);
+        setInputValue("");
+        setIsTyping(true);
+
+        // Simulate typing delay for natural feel
+        await new Promise((r) => setTimeout(r, 600));
+        setIsTyping(false);
+
+        // Get reply from local engine (always works, no network needed)
+        const { text: replyText, products: replyProducts, chips } = getLocalReply(trimmed, menuItems);
+
+        // Handle add-to-cart command
+        if (replyText.startsWith("ADD_TO_CART:")) {
+            const title = replyText.replace("ADD_TO_CART:", "").trim();
+            const product = menuItems.find((p) => p.title.toLowerCase() === title.toLowerCase());
             if (product) {
-                dispatch(
-                    cartActions.addItem({
-                        id: product._id || product.id,
-                        title: product.title,
-                        image01: product.image01,
-                        price: product.price,
-                    })
-                );
-                addBotMessage(
-                    `✅ "${product.title}" added to your cart!\n\nAnything else? 😊`,
-                    ["Show full menu", "Keep browsing", "I'm done thanks!"]
-                );
+                handleAddToCart(product);
             } else {
-                addBotMessage("Hmm, I couldn't find that item. Try browsing the full menu! 😊");
+                addBotMessage("Hmm, I couldn't find that item. Try browsing the full menu! 😊", [], ["Show full menu 📋"]);
             }
-        },
-        [menuItems, dispatch, addBotMessage]
-    );
+            return;
+        }
 
-    const processMessage = useCallback(
-        async (text) => {
-            const trimmed = text.trim();
-            if (!trimmed || isTyping) return;
-
-            // Add user message
-            const userMsg = { id: Date.now(), role: "user", text: trimmed, time: formatTime() };
-            setMessages((prev) => [...prev, userMsg]);
-            setInputValue("");
-            setIsTyping(true);
-
-            try {
-                // Build history for Gemini (exclude welcome, include all prior turns)
-                const history = [
-                    ...messages.filter((m) => m.id !== 1),
-                    userMsg,
-                ].map((m) => ({ role: m.role, text: m.text }));
-
-                const reply = await getGeminiResponse(history, menuItems);
-
-                setIsTyping(false);
-
-                // Check if reply is an add-to-cart command
-                if (reply.startsWith("ADD_TO_CART:")) {
-                    const itemTitle = reply.replace("ADD_TO_CART:", "").trim();
-                    handleAddToCart(itemTitle);
-                    return;
-                }
-
-                // Get smart chips from local engine based on user message
-                const { chips } = getLocalReply(trimmed, menuItems);
-                addBotMessage(reply, chips);
-            } catch (err) {
-                setIsTyping(false);
-                console.error("Chatbot error:", err);
-                // Use local engine as final fallback — never show error to user
-                const { text, chips } = getLocalReply(trimmed, menuItems);
-                if (text.startsWith("ADD_TO_CART:")) {
-                    handleAddToCart(text.replace("ADD_TO_CART:", "").trim());
-                } else {
-                    addBotMessage(text, chips);
-                }
-            }
-        },
-        [messages, menuItems, isTyping, addBotMessage, handleAddToCart]
-    );
+        addBotMessage(replyText, replyProducts, chips);
+    }, [menuItems, isTyping, addBotMessage, handleAddToCart]);
 
     const handleSend = () => processMessage(inputValue);
-
     const handleKeyDown = (e) => {
-        if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            handleSend();
-        }
+        if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); }
     };
-
     const handleReset = () => {
         setMessages([WELCOME]);
         setQuickReplies(QUICK_REPLIES);
+        setAddedItems({});
     };
 
     return (
@@ -152,7 +155,6 @@ const ChatBot = () => {
                 className="chatbot__fab"
                 onClick={() => setIsOpen((o) => !o)}
                 aria-label="Open food assistant"
-                title="Chat with Bitey"
             >
                 <i className={isOpen ? "ri-close-line" : "ri-robot-line"}></i>
                 {!isOpen && <span className="chatbot__fab-badge" />}
@@ -160,25 +162,19 @@ const ChatBot = () => {
 
             {/* ── Popup Panel ── */}
             {isOpen && (
-                <div className="chatbot__popup" role="dialog" aria-label="Smart Bite food assistant">
+                <div className="chatbot__popup" role="dialog">
                     {/* Header */}
                     <div className="chatbot__header">
                         <div className="chatbot__header-left">
                             <div className="chatbot__avatar">🤖</div>
                             <div>
                                 <p className="chatbot__name">Bitey</p>
-                                <p className="chatbot__status">
-                                    <span className="chatbot__dot" /> Online
-                                </p>
+                                <p className="chatbot__status"><span className="chatbot__dot" /> Online</p>
                             </div>
                         </div>
                         <div className="chatbot__header-right">
-                            <button onClick={handleReset} title="Clear chat" aria-label="Clear chat">
-                                <i className="ri-refresh-line"></i>
-                            </button>
-                            <button onClick={() => setIsOpen(false)} title="Close" aria-label="Close">
-                                <i className="ri-close-line"></i>
-                            </button>
+                            <button onClick={handleReset} title="Clear chat"><i className="ri-refresh-line" /></button>
+                            <button onClick={() => setIsOpen(false)} title="Close"><i className="ri-close-line" /></button>
                         </div>
                     </div>
 
@@ -186,11 +182,27 @@ const ChatBot = () => {
                     <div className="chatbot__messages" role="log" aria-live="polite">
                         {messages.map((msg) => (
                             <div key={msg.id} className={`chatbot__msg ${msg.role}`}>
-                                {msg.role === "bot" && (
-                                    <div className="chatbot__msg-icon">🤖</div>
-                                )}
+                                {msg.role === "bot" && <div className="chatbot__msg-icon">🤖</div>}
                                 <div className="chatbot__msg-wrap">
                                     <div className="chatbot__bubble">{msg.text}</div>
+
+                                    {/* ── Inline product cards ── */}
+                                    {msg.products && msg.products.length > 0 && (
+                                        <div className="chatbot__product-list">
+                                            {msg.products.map((product) => {
+                                                const pid = product._id || product.id;
+                                                return (
+                                                    <ProductCard
+                                                        key={pid}
+                                                        product={product}
+                                                        onAdd={handleAddToCart}
+                                                        added={!!addedItems[pid]}
+                                                    />
+                                                );
+                                            })}
+                                        </div>
+                                    )}
+
                                     <span className="chatbot__time">{msg.time}</span>
                                 </div>
                             </div>
@@ -204,7 +216,6 @@ const ChatBot = () => {
                                 </div>
                             </div>
                         )}
-
                         <div ref={messagesEndRef} />
                     </div>
 
@@ -228,15 +239,13 @@ const ChatBot = () => {
                             onChange={(e) => setInputValue(e.target.value)}
                             onKeyDown={handleKeyDown}
                             maxLength={300}
-                            aria-label="Message input"
                         />
                         <button
                             className="chatbot__send"
                             onClick={handleSend}
                             disabled={!inputValue.trim() || isTyping}
-                            aria-label="Send"
                         >
-                            <i className="ri-send-plane-fill"></i>
+                            <i className="ri-send-plane-fill" />
                         </button>
                     </div>
                 </div>
