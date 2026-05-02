@@ -3,6 +3,7 @@ import Header from "../Header/Header.jsx";
 import Footer from "../Footer/Footer.jsx";
 import Routes from "../../routes/Routers";
 import Carts from "../UI/cart/Carts.jsx";
+import ChatBot from "../ChatBot/ChatBot.jsx";
 import { useSelector } from "react-redux";
 import { AnimatePresence } from "framer-motion";
 
@@ -17,6 +18,7 @@ const Layout = () => {
         <Routes />
       </div>
       <Footer />
+      <ChatBot />
     </div>
   );
 };

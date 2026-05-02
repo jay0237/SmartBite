@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { getStats, getAdminOrders, updateOrderStatus, getAdminUsers, deleteUser, updateUserRole, getAdminProducts, createProduct, deleteProduct } from "../api/admin";
+import { getRestaurants, createRestaurant, updateRestaurant, deleteRestaurant } from "../api/restaurants";
 import Helmet from "../components/Helmet/Helmet";
 
 const STATUS_FLOW = ["Confirmed", "Preparing", "Out for Delivery", "Delivered"];
@@ -20,6 +21,17 @@ const Admin = () => {
     const [showForm, setShowForm] = useState(false);
     const [prodForm, setProdForm] = useState({ title: "", price: "", category: "Burger", image01: "", desc: "" });
     const [prodLoading, setProdLoading] = useState(false);
+
+    // Restaurant state
+    const [restaurants, setRestaurants] = useState([]);
+    const [showRestForm, setShowRestForm] = useState(false);
+    const [editingRestaurant, setEditingRestaurant] = useState(null);
+    const [restForm, setRestForm] = useState({
+        name: "", image: "", cuisine: "", rating: "4.5",
+        deliveryTime: "30-40 min", location: "", isOpen: true,
+        description: "", minOrder: "0", deliveryFee: "0",
+    });
+    const [restLoading, setRestLoading] = useState(false);
 
     const isAdmin = currentUser?.role === "admin";
 
@@ -40,6 +52,9 @@ const Admin = () => {
             } else if (activeTab === "menu") {
                 const { data } = await getAdminProducts();
                 setProducts(data.products);
+            } else if (activeTab === "restaurants") {
+                const data = await getRestaurants();
+                setRestaurants(data?.data || []);
             }
         } catch (err) { console.error(err); }
         finally { setLoading(false); }
@@ -90,11 +105,61 @@ const Admin = () => {
         finally { setProdLoading(false); }
     };
 
+    // ── Restaurant handlers ──
+    const resetRestForm = () => {
+        setRestForm({ name: "", image: "", cuisine: "", rating: "4.5", deliveryTime: "30-40 min", location: "", isOpen: true, description: "", minOrder: "0", deliveryFee: "0" });
+        setEditingRestaurant(null);
+        setShowRestForm(false);
+    };
+
+    const handleRestSubmit = async (e) => {
+        e.preventDefault();
+        setRestLoading(true);
+        try {
+            const payload = {
+                ...restForm,
+                cuisine: restForm.cuisine.split(",").map((c) => c.trim()).filter(Boolean),
+                rating: Number(restForm.rating),
+                minOrder: Number(restForm.minOrder),
+                deliveryFee: Number(restForm.deliveryFee),
+            };
+            if (editingRestaurant) {
+                await updateRestaurant(editingRestaurant._id, payload);
+            } else {
+                await createRestaurant(payload);
+            }
+            resetRestForm();
+            load();
+        } catch (err) { console.error(err); }
+        finally { setRestLoading(false); }
+    };
+
+    const handleEditRestaurant = (r) => {
+        setRestForm({
+            name: r.name, image: r.image,
+            cuisine: Array.isArray(r.cuisine) ? r.cuisine.join(", ") : r.cuisine,
+            rating: String(r.rating), deliveryTime: r.deliveryTime,
+            location: r.location, isOpen: r.isOpen,
+            description: r.description || "",
+            minOrder: String(r.minOrder || 0),
+            deliveryFee: String(r.deliveryFee || 0),
+        });
+        setEditingRestaurant(r);
+        setShowRestForm(true);
+    };
+
+    const handleDeleteRestaurant = async (id) => {
+        if (!window.confirm("Delete this restaurant?")) return;
+        await deleteRestaurant(id);
+        load();
+    };
+
     const card = { background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: "var(--radius)", padding: "24px" };
     const tabs = [
         { id: "dashboard", label: "Dashboard", icon: "ri-dashboard-line" },
         { id: "orders", label: "Orders", icon: "ri-file-list-3-line" },
         { id: "menu", label: "Menu", icon: "ri-restaurant-line" },
+        { id: "restaurants", label: "Restaurants", icon: "ri-store-2-line" },
         { id: "users", label: "Users", icon: "ri-group-line" },
     ];
 
@@ -242,6 +307,125 @@ const Admin = () => {
                                                         </Col>
                                                     ))}
                                                 </Row>
+                                            </>
+                                        )}
+
+                                        {/* ── Restaurants ── */}
+                                        {activeTab === "restaurants" && (
+                                            <>
+                                                <div className="d-flex align-items-center justify-content-between mb-4">
+                                                    <h4 style={{ margin: 0 }}>Restaurants ({restaurants.length})</h4>
+                                                    <button onClick={() => { resetRestForm(); setShowRestForm(!showRestForm); }} className="btn-primary-custom" style={{ padding: "10px 20px" }}>
+                                                        <i className={`ri-${showRestForm && !editingRestaurant ? "close" : "add"}-line me-2`}></i>
+                                                        {showRestForm && !editingRestaurant ? "Cancel" : "Add Restaurant"}
+                                                    </button>
+                                                </div>
+
+                                                <AnimatePresence>
+                                                    {showRestForm && (
+                                                        <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
+                                                            style={{ ...card, marginBottom: 24, overflow: "hidden" }}>
+                                                            <h6 style={{ marginBottom: 16 }}>{editingRestaurant ? "Edit Restaurant" : "Add New Restaurant"}</h6>
+                                                            <form onSubmit={handleRestSubmit}>
+                                                                <Row>
+                                                                    <Col lg="6" className="mb-3">
+                                                                        <label style={{ fontSize: "0.82rem", color: "var(--text-muted)", display: "block", marginBottom: 6 }}>Restaurant Name *</label>
+                                                                        <input type="text" placeholder="e.g. Pizzeria Bella" value={restForm.name} onChange={(e) => setRestForm({ ...restForm, name: e.target.value })} required className="input-custom" />
+                                                                    </Col>
+                                                                    <Col lg="6" className="mb-3">
+                                                                        <label style={{ fontSize: "0.82rem", color: "var(--text-muted)", display: "block", marginBottom: 6 }}>Image URL *</label>
+                                                                        <input type="text" placeholder="https://..." value={restForm.image} onChange={(e) => setRestForm({ ...restForm, image: e.target.value })} required className="input-custom" />
+                                                                    </Col>
+                                                                    <Col lg="6" className="mb-3">
+                                                                        <label style={{ fontSize: "0.82rem", color: "var(--text-muted)", display: "block", marginBottom: 6 }}>Cuisine (comma-separated) *</label>
+                                                                        <input type="text" placeholder="Italian, Pizza" value={restForm.cuisine} onChange={(e) => setRestForm({ ...restForm, cuisine: e.target.value })} required className="input-custom" />
+                                                                    </Col>
+                                                                    <Col lg="3" className="mb-3">
+                                                                        <label style={{ fontSize: "0.82rem", color: "var(--text-muted)", display: "block", marginBottom: 6 }}>Rating (0–5)</label>
+                                                                        <input type="number" step="0.1" min="0" max="5" value={restForm.rating} onChange={(e) => setRestForm({ ...restForm, rating: e.target.value })} className="input-custom" />
+                                                                    </Col>
+                                                                    <Col lg="3" className="mb-3">
+                                                                        <label style={{ fontSize: "0.82rem", color: "var(--text-muted)", display: "block", marginBottom: 6 }}>Delivery Time</label>
+                                                                        <input type="text" placeholder="30-40 min" value={restForm.deliveryTime} onChange={(e) => setRestForm({ ...restForm, deliveryTime: e.target.value })} className="input-custom" />
+                                                                    </Col>
+                                                                    <Col lg="6" className="mb-3">
+                                                                        <label style={{ fontSize: "0.82rem", color: "var(--text-muted)", display: "block", marginBottom: 6 }}>Location *</label>
+                                                                        <input type="text" placeholder="Downtown, City Center" value={restForm.location} onChange={(e) => setRestForm({ ...restForm, location: e.target.value })} required className="input-custom" />
+                                                                    </Col>
+                                                                    <Col lg="3" className="mb-3">
+                                                                        <label style={{ fontSize: "0.82rem", color: "var(--text-muted)", display: "block", marginBottom: 6 }}>Min Order (₹)</label>
+                                                                        <input type="number" min="0" value={restForm.minOrder} onChange={(e) => setRestForm({ ...restForm, minOrder: e.target.value })} className="input-custom" />
+                                                                    </Col>
+                                                                    <Col lg="3" className="mb-3">
+                                                                        <label style={{ fontSize: "0.82rem", color: "var(--text-muted)", display: "block", marginBottom: 6 }}>Delivery Fee (₹)</label>
+                                                                        <input type="number" min="0" value={restForm.deliveryFee} onChange={(e) => setRestForm({ ...restForm, deliveryFee: e.target.value })} className="input-custom" />
+                                                                    </Col>
+                                                                    <Col lg="12" className="mb-3">
+                                                                        <label style={{ fontSize: "0.82rem", color: "var(--text-muted)", display: "block", marginBottom: 6 }}>Description</label>
+                                                                        <input type="text" placeholder="Short description..." value={restForm.description} onChange={(e) => setRestForm({ ...restForm, description: e.target.value })} className="input-custom" />
+                                                                    </Col>
+                                                                    <Col lg="3" className="mb-3">
+                                                                        <label style={{ fontSize: "0.82rem", color: "var(--text-muted)", display: "block", marginBottom: 6 }}>Status</label>
+                                                                        <select value={restForm.isOpen} onChange={(e) => setRestForm({ ...restForm, isOpen: e.target.value === "true" })} className="input-custom">
+                                                                            <option value="true">Open</option>
+                                                                            <option value="false">Closed</option>
+                                                                        </select>
+                                                                    </Col>
+                                                                </Row>
+                                                                <div className="d-flex gap-2">
+                                                                    <button type="submit" className="btn-primary-custom" disabled={restLoading} style={{ padding: "10px 24px" }}>
+                                                                        {restLoading ? "Saving..." : editingRestaurant ? "Update Restaurant" : "Add Restaurant"}
+                                                                    </button>
+                                                                    {editingRestaurant && (
+                                                                        <button type="button" onClick={resetRestForm} style={{ padding: "10px 20px", background: "transparent", border: "1px solid var(--border)", color: "var(--text-muted)", borderRadius: 8, cursor: "pointer" }}>
+                                                                            Cancel
+                                                                        </button>
+                                                                    )}
+                                                                </div>
+                                                            </form>
+                                                        </motion.div>
+                                                    )}
+                                                </AnimatePresence>
+
+                                                {restaurants.length === 0 ? (
+                                                    <div style={{ ...card, textAlign: "center", padding: 60 }}>
+                                                        <i className="ri-store-2-line" style={{ fontSize: "3rem", color: "var(--text-muted)", display: "block", marginBottom: 12 }}></i>
+                                                        <p style={{ color: "var(--text-muted)" }}>No restaurants yet. Add one above.</p>
+                                                    </div>
+                                                ) : (
+                                                    <Row>
+                                                        {restaurants.map((r) => (
+                                                            <Col lg="4" md="6" key={r._id} className="mb-3">
+                                                                <div style={{ ...card, padding: 0, overflow: "hidden" }}>
+                                                                    <div style={{ position: "relative", height: 140 }}>
+                                                                        <img src={r.image} alt={r.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                                                                        <span style={{ position: "absolute", top: 10, right: 10, padding: "4px 10px", borderRadius: 20, fontSize: "0.72rem", fontWeight: 700, background: r.isOpen ? "rgba(76,175,80,0.9)" : "rgba(244,67,54,0.9)", color: "#fff" }}>
+                                                                            {r.isOpen ? "Open" : "Closed"}
+                                                                        </span>
+                                                                    </div>
+                                                                    <div style={{ padding: "14px" }}>
+                                                                        <div style={{ fontWeight: 700, fontSize: "0.95rem", marginBottom: 4 }}>{r.name}</div>
+                                                                        <div style={{ fontSize: "0.78rem", color: "var(--text-muted)", marginBottom: 4 }}>
+                                                                            {Array.isArray(r.cuisine) ? r.cuisine.join(", ") : r.cuisine}
+                                                                        </div>
+                                                                        <div className="d-flex align-items-center justify-content-between" style={{ marginBottom: 12 }}>
+                                                                            <span style={{ fontSize: "0.82rem" }}>⭐ {r.rating} • 🚚 {r.deliveryTime}</span>
+                                                                            <span style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>📍 {r.location}</span>
+                                                                        </div>
+                                                                        <div className="d-flex gap-2">
+                                                                            <button onClick={() => handleEditRestaurant(r)} style={{ flex: 1, background: "rgba(255,107,53,0.1)", border: "1px solid rgba(255,107,53,0.3)", color: "var(--primary)", padding: "6px 0", borderRadius: 8, cursor: "pointer", fontSize: "0.82rem", fontWeight: 600 }}>
+                                                                                <i className="ri-edit-line me-1"></i> Edit
+                                                                            </button>
+                                                                            <button onClick={() => handleDeleteRestaurant(r._id)} style={{ flex: 1, background: "rgba(244,67,54,0.1)", border: "1px solid rgba(244,67,54,0.3)", color: "#f44336", padding: "6px 0", borderRadius: 8, cursor: "pointer", fontSize: "0.82rem", fontWeight: 600 }}>
+                                                                                <i className="ri-delete-bin-line me-1"></i> Delete
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </Col>
+                                                        ))}
+                                                    </Row>
+                                                )}
                                             </>
                                         )}
 
