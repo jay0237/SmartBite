@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { cartActions } from "../../store/shopping-cart/cartSlice";
 import { getProducts } from "../../api/products";
 import localProducts from "../../assets/fake-data/products";
-import { getGeminiResponse, QUICK_REPLIES } from "./chatbotEngine";
+import { getGeminiResponse, getLocalReply, QUICK_REPLIES } from "./chatbotEngine";
 import "./ChatBot.css";
 
 const formatTime = () =>
@@ -106,21 +106,26 @@ const ChatBot = () => {
 
                 setIsTyping(false);
 
-                // Check if Gemini issued an add-to-cart command
+                // Check if reply is an add-to-cart command
                 if (reply.startsWith("ADD_TO_CART:")) {
                     const itemTitle = reply.replace("ADD_TO_CART:", "").trim();
                     handleAddToCart(itemTitle);
                     return;
                 }
 
-                addBotMessage(reply);
+                // Get smart chips from local engine based on user message
+                const { chips } = getLocalReply(trimmed, menuItems);
+                addBotMessage(reply, chips);
             } catch (err) {
                 setIsTyping(false);
                 console.error("Chatbot error:", err);
-                addBotMessage(
-                    "Oops, I had a little hiccup 😅 Try again in a moment!",
-                    QUICK_REPLIES
-                );
+                // Use local engine as final fallback — never show error to user
+                const { text, chips } = getLocalReply(trimmed, menuItems);
+                if (text.startsWith("ADD_TO_CART:")) {
+                    handleAddToCart(text.replace("ADD_TO_CART:", "").trim());
+                } else {
+                    addBotMessage(text, chips);
+                }
             }
         },
         [messages, menuItems, isTyping, addBotMessage, handleAddToCart]
