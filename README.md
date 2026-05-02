@@ -50,7 +50,8 @@ Smart Bite is a full-stack, AI-powered food delivery web application built with 
 * Integrated AI chatbot (Gemini API)
 * Smart food suggestions (extensible to mood-based recommendations)
 * Personalized user experience (based on future enhancements)
-
+* you can got  a recomendation from ai and order it throught the help of ai.
+* even when user feel confuse ai suggest a food from menu list.user easily interact with them
 ---
 
 ## Tech Stack
