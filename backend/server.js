@@ -10,6 +10,7 @@ const orderRoutes = require("./src/routes/orderRoutes");
 const adminRoutes = require("./src/routes/adminRoutes");
 const paymentRoutes = require("./src/routes/paymentRoutes");
 const favoritesRoutes = require("./src/routes/favoritesRoutes");
+const reviewRoutes = require("./src/routes/reviewRoutes");
 
 // Optional routes — only load if files exist
 let chatbotRoutes, restaurantRoutes;
@@ -35,6 +36,7 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/favorites", favoritesRoutes);
+app.use("/api/reviews", reviewRoutes);
 if (chatbotRoutes) app.use("/api/chatbot", chatbotRoutes);
 if (restaurantRoutes) app.use("/api/restaurants", restaurantRoutes);
 
@@ -46,4 +48,7 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => console.log(`🚀 Smart Bite API running on port ${PORT}`));
+app.listen(PORT, () => {
+    console.log(`🚀 Smart Bite API running on port ${PORT}`);
+    console.log(`💳 Razorpay: ${process.env.RAZORPAY_KEY_ID ? "✅ configured" : "❌ NOT configured"}`);
+});

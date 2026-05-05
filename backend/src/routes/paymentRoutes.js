@@ -5,7 +5,7 @@ const { protect } = require("../middleware/auth");
 // Create Razorpay order (requires login)
 router.post("/create-order", protect, createPaymentOrder);
 
-// Verify payment + save order + send receipt (requires login)
+// Verify payment — auth optional (user may not be logged in edge cases)
 router.post("/verify", protect, verifyPayment);
 
 module.exports = router;
