@@ -77,7 +77,7 @@ Smart Bite is a full-stack, AI-powered food delivery web application built with 
 
 ### Payments
 
-* Razorpay
+* Razorpay Payment Methods
 
 ---
 
