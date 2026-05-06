@@ -37,6 +37,20 @@ const ProductCard = ({ item }) => {
         </div>
         <div className="product__content">
           <h5 className="mb-1" style={{ color: "var(--text)" }}>{title}</h5>
+          {/* Star rating */}
+          {item.ratings > 0 && (
+            <div className="d-flex align-items-center gap-1 mb-1">
+              {[1, 2, 3, 4, 5].map((s) => (
+                <i key={s}
+                  className={s <= Math.round(item.ratings) ? "ri-star-fill" : "ri-star-line"}
+                  style={{ fontSize: "0.72rem", color: s <= Math.round(item.ratings) ? "#ffd700" : "var(--text-muted)" }}
+                />
+              ))}
+              <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginLeft: 2 }}>
+                ({item.numReviews || 0})
+              </span>
+            </div>
+          )}
           {desc && <p className="product__desc">{desc}</p>}
         </div>
       </Link>

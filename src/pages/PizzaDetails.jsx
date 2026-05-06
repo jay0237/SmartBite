@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { getProduct, getProducts } from "../api/products";
 import localProducts from "../assets/fake-data/products";
 import FavoriteBtn from "../components/UI/FavoriteBtn/FavoriteBtn";
+import ProductReviews from "../components/UI/Reviews/ProductReviews";
 import "../styles/product-details.css";
 import ProductCard from "../components/UI/product-card/ProductCard";
 
@@ -184,6 +185,15 @@ const PizzaDetails = () => {
             <Col lg="12" className="mt-4">
               <h6 className="description">Description</h6>
               <div className="description__content"><p>{desc}</p></div>
+            </Col>
+
+            {/* Reviews */}
+            <Col lg="12">
+              <ProductReviews
+                productId={product._id || product.id}
+                productRating={product.ratings || 0}
+                numReviews={product.numReviews || 0}
+              />
             </Col>
 
             {/* Related */}
