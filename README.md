@@ -16,6 +16,7 @@ Smart Bite is a full-stack, AI-powered food delivery web application built with 
 * Admin panel — manage orders, menu, users
 * Fully responsive dark UI
 * restaurent listing
+* Verified user can write the review
 
 ---
 
