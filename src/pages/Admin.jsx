@@ -183,7 +183,7 @@ const Admin = () => {
                                         display: "flex", alignItems: "center", gap: 10, width: "100%",
                                         padding: "10px 12px", borderRadius: "var(--radius-sm)", border: "none",
                                         cursor: "pointer", marginBottom: 4,
-                                        background: activeTab === tab.id ? "rgba(255,107,53,0.15)" : "transparent",
+                                        background: activeTab === tab.id ? "rgba(0,0,0,0.1)" : "transparent",
                                         color: activeTab === tab.id ? "var(--primary)" : "var(--text-muted)",
                                         fontWeight: activeTab === tab.id ? 600 : 400, fontSize: "0.85rem",
                                     }}>
@@ -413,7 +413,7 @@ const Admin = () => {
                                                                             <span style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>📍 {r.location}</span>
                                                                         </div>
                                                                         <div className="d-flex gap-2">
-                                                                            <button onClick={() => handleEditRestaurant(r)} style={{ flex: 1, background: "rgba(255,107,53,0.1)", border: "1px solid rgba(255,107,53,0.3)", color: "var(--primary)", padding: "6px 0", borderRadius: 8, cursor: "pointer", fontSize: "0.82rem", fontWeight: 600 }}>
+                                                                            <button onClick={() => handleEditRestaurant(r)} style={{ flex: 1, background: "rgba(0,0,0,0.08)", border: "1px solid rgba(0,0,0,0.22)", color: "var(--primary)", padding: "6px 0", borderRadius: 8, cursor: "pointer", fontSize: "0.82rem", fontWeight: 600 }}>
                                                                                 <i className="ri-edit-line me-1"></i> Edit
                                                                             </button>
                                                                             <button onClick={() => handleDeleteRestaurant(r._id)} style={{ flex: 1, background: "rgba(244,67,54,0.1)", border: "1px solid rgba(244,67,54,0.3)", color: "#f44336", padding: "6px 0", borderRadius: 8, cursor: "pointer", fontSize: "0.82rem", fontWeight: 600 }}>
@@ -456,7 +456,7 @@ const Admin = () => {
                                                                     </td>
                                                                     <td style={{ padding: "14px 16px", borderBottom: "1px solid var(--border)", color: "var(--text-muted)", fontSize: "0.85rem" }}>{user.email}</td>
                                                                     <td style={{ padding: "14px 16px", borderBottom: "1px solid var(--border)" }}>
-                                                                        <span style={{ padding: "4px 12px", borderRadius: "50px", fontSize: "0.75rem", fontWeight: 600, background: user.role === "admin" ? "rgba(255,107,53,0.15)" : "rgba(33,150,243,0.15)", color: user.role === "admin" ? "var(--primary)" : "#2196f3" }}>
+                                                                        <span style={{ padding: "4px 12px", borderRadius: "50px", fontSize: "0.75rem", fontWeight: 600, background: user.role === "admin" ? "rgba(0,0,0,0.12)" : "rgba(33,150,243,0.15)", color: user.role === "admin" ? "var(--primary)" : "#2196f3" }}>
                                                                             {user.role}
                                                                         </span>
                                                                     </td>
@@ -466,7 +466,7 @@ const Admin = () => {
                                                                     <td style={{ padding: "14px 16px", borderBottom: "1px solid var(--border)" }}>
                                                                         <div className="d-flex gap-2">
                                                                             <button onClick={() => handleRoleToggle(user)}
-                                                                                style={{ background: "rgba(255,107,53,0.1)", border: "1px solid rgba(255,107,53,0.3)", color: "var(--primary)", padding: "4px 10px", borderRadius: 6, cursor: "pointer", fontSize: "0.75rem" }}>
+                                                                                style={{ background: "rgba(0,0,0,0.08)", border: "1px solid rgba(0,0,0,0.22)", color: "var(--primary)", padding: "4px 10px", borderRadius: 6, cursor: "pointer", fontSize: "0.75rem" }}>
                                                                                 {user.role === "admin" ? "→ User" : "→ Admin"}
                                                                             </button>
                                                                             {user._id !== currentUser._id && (
@@ -573,7 +573,7 @@ const OrderTable = ({ orders, onAdvance, full }) => {
                             </td>
                             <td style={{ padding: "12px", borderBottom: "1px solid var(--border)" }}>
                                 {order.status !== "Delivered" && order.status !== "Cancelled" && (
-                                    <button onClick={() => onAdvance(order)} style={{ background: "rgba(255,107,53,0.1)", border: "1px solid rgba(255,107,53,0.3)", color: "var(--primary)", padding: "4px 12px", borderRadius: "50px", fontSize: "0.75rem", cursor: "pointer", fontWeight: 600 }}>
+                                    <button onClick={() => onAdvance(order)} style={{ background: "rgba(0,0,0,0.08)", border: "1px solid rgba(0,0,0,0.22)", color: "var(--primary)", padding: "4px 12px", borderRadius: "50px", fontSize: "0.75rem", cursor: "pointer", fontWeight: 600 }}>
                                         Advance →
                                     </button>
                                 )}

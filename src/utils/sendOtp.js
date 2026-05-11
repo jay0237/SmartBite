@@ -25,7 +25,7 @@ export const sendOTPEmail = async (toEmail, toName, otpCode) => {
     if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
         console.info(
             "%c[Smart Bite — Dev Mode OTP]",
-            "color:#ff6b35;font-weight:bold;font-size:14px",
+            "color:#111111;font-weight:bold;font-size:14px",
             `\nEmail : ${toEmail}\nOTP   : ${otpCode}`
         );
         await new Promise((r) => setTimeout(r, 800));

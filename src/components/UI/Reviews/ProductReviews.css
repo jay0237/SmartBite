@@ -43,7 +43,7 @@
 }
 
 .reviews__write-btn:hover {
-    background: rgba(255, 107, 53, 0.1);
+    background: rgba(0, 0, 0, 0.08);
     transform: translateY(-1px);
 }
 
@@ -159,7 +159,7 @@
 /* ── Form ────────────────────────────────────────────────────── */
 .reviews__form {
     background: var(--bg-card);
-    border: 1px solid rgba(255, 107, 53, 0.2);
+    border: 1px solid rgba(0, 0, 0, 0.18);
     border-radius: var(--radius);
     padding: 24px;
     margin-bottom: 28px;
@@ -202,7 +202,7 @@
 
 .reviews__textarea:focus {
     border-color: var(--primary);
-    background: rgba(255, 107, 53, 0.04);
+    background: rgba(0, 0, 0, 0.04);
 }
 
 .reviews__textarea::placeholder { color: var(--text-muted); }
@@ -235,12 +235,12 @@
     align-items: center;
     gap: 6px;
     transition: all 0.3s;
-    box-shadow: 0 4px 14px rgba(255, 107, 53, 0.35);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
 }
 
 .reviews__submit-btn:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 107, 53, 0.5);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.38);
 }
 
 .reviews__submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
@@ -281,7 +281,7 @@
     transition: border-color 0.2s;
 }
 
-.review__card:hover { border-color: rgba(255, 107, 53, 0.25); }
+.review__card:hover { border-color: rgba(0, 0, 0, 0.22); }
 
 .review__card-header {
     display: flex;

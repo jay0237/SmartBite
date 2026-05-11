@@ -103,7 +103,7 @@
 }
 
 .restaurant__tag {
-    background: rgba(255, 107, 53, 0.1);
+    background: rgba(0, 0, 0, 0.08);
     color: var(--primary);
     padding: 6px 12px;
     border-radius: 20px;
@@ -236,7 +236,7 @@
 
 .restaurant__menu-item:hover {
     border-color: var(--primary);
-    box-shadow: 0 12px 32px rgba(255, 107, 53, 0.2);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.16);
 }
 
 .restaurant__item-img-wrapper {
@@ -308,7 +308,7 @@
 
 .restaurant__add-btn:hover:not(:disabled) {
     transform: scale(1.1);
-    box-shadow: 0 6px 16px rgba(255, 107, 53, 0.4);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.32);
 }
 
 .restaurant__add-btn:disabled {

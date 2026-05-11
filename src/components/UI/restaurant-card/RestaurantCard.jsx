@@ -13,7 +13,7 @@ const RestaurantCard = ({ restaurant }) => {
         },
         hover: {
             y: -8,
-            boxShadow: "0 20px 40px rgba(255, 107, 53, 0.3)",
+            boxShadow: "0 20px 40px rgba(0, 0, 0, 0.2)",
             transition: { duration: 0.3 },
         },
     };

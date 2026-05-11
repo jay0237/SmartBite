@@ -39,7 +39,7 @@ const Login = () => {
             <div style={{
                 minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center",
                 padding: "100px 20px 60px",
-                background: "radial-gradient(ellipse at 30% 50%, rgba(255,107,53,0.1) 0%, transparent 60%), var(--bg)",
+                background: "radial-gradient(ellipse at 30% 50%, rgba(0,0,0,0.08) 0%, transparent 60%), var(--bg)",
             }}>
                 <Container>
                     <Row className="justify-content-center">
@@ -51,7 +51,7 @@ const Login = () => {
                                 style={{ background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: "var(--radius)", padding: "40px" }}
                             >
                                 <div className="text-center mb-4">
-                                    <div style={{ width: 60, height: 60, borderRadius: "50%", background: "rgba(255,107,53,0.1)", border: "1px solid rgba(255,107,53,0.3)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.6rem", color: "var(--primary)", margin: "0 auto 16px" }}>
+                                    <div style={{ width: 60, height: 60, borderRadius: "50%", background: "rgba(0,0,0,0.08)", border: "1px solid rgba(0,0,0,0.2)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.6rem", color: "var(--primary)", margin: "0 auto 16px" }}>
                                         <i className="ri-lock-line"></i>
                                     </div>
                                     <h2 style={{ fontSize: "1.8rem", marginBottom: 8 }}>Welcome Back</h2>
@@ -88,7 +88,7 @@ const Login = () => {
                                     </p>
                                 </div>
 
-                                <div style={{ marginTop: 20, padding: "12px 16px", background: "rgba(255,107,53,0.05)", border: "1px solid rgba(255,107,53,0.15)", borderRadius: "var(--radius-sm)", fontSize: "0.78rem", color: "var(--text-muted)" }}>
+                                <div style={{ marginTop: 20, padding: "12px 16px", background: "rgba(0,0,0,0.04)", border: "1px solid rgba(0,0,0,0.12)", borderRadius: "var(--radius-sm)", fontSize: "0.78rem", color: "var(--text-muted)" }}>
                                     <strong style={{ color: "var(--primary)" }}>Demo Admin:</strong> admin@smartbite.com / admin123
                                 </div>
                             </motion.div>

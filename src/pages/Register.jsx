@@ -84,7 +84,7 @@ const Register = () => {
             const { data } = await sendOtpAPI({ email: form.email, name: form.name });
             // Dev mode: backend returns devOtp when email fails
             if (data.devOtp) {
-                console.info("%c[Smart Bite Dev OTP]", "color:#ff6b35;font-weight:bold;font-size:14px", "\nOTP:", data.devOtp);
+                console.info("%c[Smart Bite Dev OTP]", "color:#111111;font-weight:bold;font-size:14px", "\nOTP:", data.devOtp);
                 setDevOtp(data.devOtp); // show on screen so you can still register
             } else {
                 setDevOtp("");
@@ -141,7 +141,7 @@ const Register = () => {
         try {
             const { data } = await sendOtpAPI({ email: form.email, name: form.name });
             if (data.devOtp) {
-                console.info("%c[Dev OTP Resend]", "color:#ff6b35;font-weight:bold", data.devOtp);
+                console.info("%c[Dev OTP Resend]", "color:#111111;font-weight:bold", data.devOtp);
                 setDevOtp(data.devOtp);
             }
             setTimer(OTP_EXPIRY);
@@ -247,7 +247,7 @@ const Register = () => {
                                         </p>
                                         <span style={{
                                             fontSize: "1.8rem", fontWeight: 800,
-                                            letterSpacing: 10, color: "#ff6b35",
+                                            letterSpacing: 10, color: "#111111",
                                         }}>{devOtp}</span>
                                     </div>
                                 )}

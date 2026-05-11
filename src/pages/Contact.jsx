@@ -41,8 +41,8 @@ const Contact = () => {
                                     <div key={item.title} className="d-flex align-items-start gap-3 mb-4">
                                         <div style={{
                                             width: 44, height: 44, borderRadius: "50%",
-                                            background: "rgba(255,107,53,0.1)",
-                                            border: "1px solid rgba(255,107,53,0.2)",
+                                            background: "rgba(0,0,0,0.08)",
+                                            border: "1px solid rgba(0,0,0,0.18)",
                                             display: "flex", alignItems: "center", justifyContent: "center",
                                             color: "var(--primary)", fontSize: "1.1rem", flexShrink: 0,
                                         }}>

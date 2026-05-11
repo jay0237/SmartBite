@@ -87,7 +87,7 @@ const Checkout = () => {
           email: form.email,
           contact: form.phone,
         },
-        theme: { color: "#ff6b35" },
+        theme: { color: "#111111" },
         handler: async (response) => {
           // 3. Verify payment on backend → saves order → sends receipt email
           try {
@@ -244,7 +244,7 @@ const Checkout = () => {
                         style={{
                           flex: 1, minWidth: 160, padding: "16px", borderRadius: "var(--radius-sm)",
                           border: `2px solid ${form.payment === opt.value ? "var(--primary)" : "var(--border)"}`,
-                          background: form.payment === opt.value ? "rgba(255,107,53,0.08)" : "rgba(255,255,255,0.03)",
+                          background: form.payment === opt.value ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.03)",
                           cursor: "pointer", transition: "all 0.2s",
                         }}>
                         <i className={opt.icon} style={{ fontSize: "1.4rem", color: form.payment === opt.value ? "var(--primary)" : "var(--text-muted)", display: "block", marginBottom: 8 }}></i>

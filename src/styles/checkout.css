@@ -47,8 +47,8 @@
 }
 
 .checkout__order-id {
-  background: rgba(255, 107, 53, 0.08);
-  border: 1px solid rgba(255, 107, 53, 0.2);
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.18);
   border-radius: var(--radius-sm);
   padding: 12px 20px;
   margin-bottom: 28px;
@@ -81,12 +81,12 @@
 .checkout__btn.primary {
   background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: #fff;
-  box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.32);
 }
 
 .checkout__btn.primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(255, 107, 53, 0.6);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
 }
 
 .checkout__btn.secondary {
@@ -146,7 +146,7 @@
 .form__group select:focus,
 .form__group textarea:focus {
   border-color: var(--primary);
-  background: rgba(255, 107, 53, 0.05);
+  background: rgba(0, 0, 0, 0.04);
 }
 
 .form__group input::placeholder,

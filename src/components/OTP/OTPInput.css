@@ -18,18 +18,18 @@
   color: #f0f0f0;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
-  caret-color: #ff6b35;
+  caret-color: #111111;
 }
 
 .otp__box:focus {
-  border-color: #ff6b35;
-  background: rgba(255, 107, 53, 0.08);
-  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2), 0 0 16px rgba(255, 107, 53, 0.15);
+  border-color: #111111;
+  background: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.18), 0 0 16px rgba(0, 0, 0, 0.14);
 }
 
 .otp__box--filled {
-  border-color: #ff6b35;
-  background: rgba(255, 107, 53, 0.1);
+  border-color: #111111;
+  background: rgba(0, 0, 0, 0.1);
   color: #fff;
 }
 

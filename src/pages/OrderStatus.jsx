@@ -68,8 +68,8 @@ const ReviewForm = ({ item, onSubmit, onSkip }) => {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             style={{
-                background: "rgba(255,107,53,0.05)",
-                border: "1px solid rgba(255,107,53,0.2)",
+                background: "rgba(0,0,0,0.05)",
+                border: "1px solid rgba(0,0,0,0.2)",
                 borderRadius: 10, padding: "14px 16px", marginTop: 10,
                 overflow: "hidden",
             }}
@@ -246,7 +246,7 @@ const OrderCard = ({ order, currentUser }) => {
                                             <button
                                                 onClick={() => setActiveReview(isActive ? null : pid)}
                                                 style={{
-                                                    background: isActive ? "rgba(255,107,53,0.15)" : "transparent",
+                                                    background: isActive ? "rgba(0,0,0,0.1)" : "transparent",
                                                     border: `1px solid ${isActive ? "var(--primary)" : "var(--border)"}`,
                                                     color: isActive ? "var(--primary)" : "var(--text-muted)",
                                                     padding: "5px 12px", borderRadius: "50px",

@@ -9,8 +9,8 @@
 }
 
 .cart__item:hover {
-  border-color: rgba(255, 107, 53, 0.3) !important;
-  background: rgba(255, 107, 53, 0.05) !important;
+  border-color: rgba(0, 0, 0, 0.25) !important;
+  background: rgba(0, 0, 0, 0.04) !important;
 }
 
 .cart__item-info img {
@@ -85,7 +85,7 @@
 
 .extra__tag {
   display: inline-block;
-  background: rgba(255, 107, 53, 0.1);
+  background: rgba(0, 0, 0, 0.1);
   color: var(--primary);
   font-size: 0.65rem;
   padding: 2px 8px;

@@ -14,7 +14,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255, 107, 53, 0.08), transparent);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.07), transparent);
   opacity: 0;
   transition: opacity 0.3s;
 }
@@ -24,9 +24,9 @@
 }
 
 .product__item:hover {
-  border-color: rgba(255, 107, 53, 0.4);
+  border-color: rgba(0, 0, 0, 0.28);
   transform: translateY(-6px);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.12);
 }
 
 .product__img-wrapper {
@@ -115,12 +115,12 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
-  box-shadow: 0 3px 10px rgba(255, 107, 53, 0.3);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.24);
 }
 
 .addTOCART__btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 107, 53, 0.5);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.36);
 }
 
 @media only screen and (max-width: 576px) {

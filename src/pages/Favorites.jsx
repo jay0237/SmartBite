@@ -207,7 +207,7 @@ const Favorites = () => {
                                                             padding: "7px 16px", borderRadius: "50px",
                                                             fontSize: "0.8rem", fontWeight: 600,
                                                             cursor: "pointer", transition: "all 0.3s",
-                                                            boxShadow: "0 3px 10px rgba(255,107,53,0.3)",
+                                                            boxShadow: "0 3px 10px rgba(0,0,0,0.28)",
                                                         }}
                                                     >
                                                         <i className="ri-shopping-cart-line me-1"></i>Add
