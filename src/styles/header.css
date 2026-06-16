@@ -275,3 +275,65 @@
     width: 100%;
   }
 }
+
+/* Header Location Button Styles */
+.header__location-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border);
+  padding: 8px 16px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+  font-weight: 600;
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text);
+  margin-left: 20px;
+  margin-right: auto;
+}
+
+.header__location-btn:hover {
+  background: var(--primary);
+  color: var(--accent);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.header__location-btn i {
+  font-size: 1.1rem;
+}
+
+.location__spin {
+  display: inline-block;
+  animation: spin-slow 1s linear infinite;
+}
+
+@media only screen and (max-width: 992px) {
+  .header__location-btn {
+    margin-left: 10px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    max-width: 180px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .header__location-btn {
+    max-width: 130px;
+    font-size: 0.75rem;
+    padding: 5px 10px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .header__location-btn {
+    display: none; /* Hide on extremely small viewports to avoid header overflow */
+  }
+}

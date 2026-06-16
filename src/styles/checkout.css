@@ -158,3 +158,63 @@
   background: var(--bg-card);
   color: var(--text);
 }
+
+/* Delivery Information Header with Location Button */
+.checkout__delivery-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+  margin-bottom: 24px;
+}
+
+.checkout__delivery-header h5 {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  border-bottom: none !important;
+}
+
+.location-detect-btn {
+  background: transparent;
+  border: 1.5px solid var(--primary);
+  color: var(--primary);
+  border-radius: 50px;
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.location-detect-btn:hover:not(:disabled) {
+  background: var(--primary);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.location-detect-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+
+.location__spin {
+  display: inline-block;
+  animation: spin-slow 1s linear infinite;
+}
+
+@media only screen and (max-width: 576px) {
+  .checkout__delivery-header {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 12px;
+  }
+  
+  .location-detect-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

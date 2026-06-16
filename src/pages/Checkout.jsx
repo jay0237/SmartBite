@@ -7,6 +7,7 @@ import { createPaymentOrder, verifyPayment } from "../api/payment";
 import { cartActions } from "../store/shopping-cart/cartSlice";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/common-section/CommonSection";
+import { fetchLocation } from "../utils/geolocation";
 import "../styles/checkout.css";
 
 // Load Razorpay script dynamically
@@ -24,6 +25,7 @@ const Checkout = () => {
   const cartItems = useSelector((s) => s.cart.cartItems);
   const totalAmount = useSelector((s) => s.cart.totalAmount);
   const currentUser = useSelector((s) => s.auth.currentUser);
+  const { address: reduxAddress, city: reduxCity, loading: locationLoading, error: locationError } = useSelector((s) => s.location);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -40,6 +42,38 @@ const Checkout = () => {
     city: "",
     payment: "razorpay",
   });
+
+  // Pre-fill location fields if they exist in Redux
+  useEffect(() => {
+    if (reduxAddress || reduxCity) {
+      setForm((prev) => ({
+        ...prev,
+        address: prev.address || reduxAddress,
+        city: prev.city || reduxCity,
+      }));
+    }
+  }, [reduxAddress, reduxCity]);
+
+  // Sync geocoding error to checkout page warning if it happens
+  useEffect(() => {
+    if (locationError) {
+      setError(locationError);
+    }
+  }, [locationError]);
+
+  const handleFetchLocation = async () => {
+    setError("");
+    try {
+      const result = await fetchLocation(dispatch);
+      setForm((prev) => ({
+        ...prev,
+        address: result.address,
+        city: result.city,
+      }));
+    } catch (err) {
+      setError(err || "Failed to fetch location automatically.");
+    }
+  };
 
   useEffect(() => {
     if (!currentUser) navigate("/login");
@@ -212,7 +246,21 @@ const Checkout = () => {
             {/* Delivery Form */}
             <Col lg="7" className="mb-4">
               <motion.div className="checkout__form" initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}>
-                <h5>Delivery Information</h5>
+                <div className="checkout__delivery-header d-flex align-items-center justify-content-between">
+                  <h5>Delivery Information</h5>
+                  <button
+                    type="button"
+                    onClick={handleFetchLocation}
+                    className="location-detect-btn"
+                    disabled={locationLoading}
+                  >
+                    {locationLoading ? (
+                      <><i className="ri-loader-4-line location__spin"></i> Detecting...</>
+                    ) : (
+                      <><i className="ri-map-pin-line"></i> Use Current Location</>
+                    )}
+                  </button>
+                </div>
                 <form onSubmit={handleSubmit}>
                   <Row>
                     {[

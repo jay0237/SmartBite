@@ -4,6 +4,7 @@ import cartUiSlice from "./shopping-cart/cartUiSlice";
 import authSlice from "./shopping-cart/authSlice";
 import orderSlice from "./shopping-cart/orderSlice";
 import favoritesSlice from "./shopping-cart/favoritesSlice";
+import locationSlice from "./shopping-cart/locationSlice";
 
 // restaurantSlice is optional — only import if it exists
 let restaurantReducer = null;
@@ -15,6 +16,7 @@ const reducers = {
   auth: authSlice.reducer,
   orders: orderSlice.reducer,
   favorites: favoritesSlice.reducer,
+  location: locationSlice.reducer,
 };
 
 if (restaurantReducer) reducers.restaurants = restaurantReducer;

@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { cartUiActions } from "../../store/shopping-cart/cartUiSlice";
 import { authActions } from "../../store/shopping-cart/authSlice";
 import { clearFavorites, fetchFavorites } from "../../store/shopping-cart/favoritesSlice";
+import { fetchLocation } from "../../utils/geolocation";
 import "../../styles/header.css";
 
 const nav__links = [
@@ -23,8 +24,13 @@ const Header = () => {
   const totalQuantity = useSelector((s) => s.cart.totalQuantity);
   const favCount = useSelector((s) => s.favorites.dishes.length);
   const currentUser = useSelector((s) => s.auth.currentUser);
+  const { address, city, loading: locationLoading, error: locationError } = useSelector((s) => s.location);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const handleLocationFetch = () => {
+    fetchLocation(dispatch).catch((err) => console.error(err));
+  };
 
   // Load favorites whenever a user is present (handles page refresh)
   useEffect(() => {
@@ -72,6 +78,30 @@ const Header = () => {
               <span>Smart Bite</span>
               <span>Food Delivery</span>
             </div>
+          </div>
+
+          {/* Location button/selector */}
+          <div
+            className="header__location-btn"
+            onClick={handleLocationFetch}
+            title={locationError ? `Error: ${locationError}` : (address || "Click to detect your current location")}
+          >
+            {locationLoading ? (
+              <>
+                <i className="ri-loader-4-line location__spin"></i>
+                <span>Detecting...</span>
+              </>
+            ) : address ? (
+              <>
+                <i className="ri-map-pin-2-fill" style={{ color: "var(--danger)" }}></i>
+                <span>{city || address.split(",")[0]}</span>
+              </>
+            ) : (
+              <>
+                <i className="ri-map-pin-line"></i>
+                <span>Detect Location</span>
+              </>
+            )}
           </div>
 
           {/* Nav links */}
